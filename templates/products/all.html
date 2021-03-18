@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head_title %} Products {% endblock %}
+
+
+ {% block styles %}
+ 	.jumbotron{
+ 		color: red;
+ 	}
+
+ {% endblock %}
+
+
+
+{% block content %}
+
+{% load static %}
+
+<div class = 'row'>
+	{% for product in products %}
+<div class ='col-sm-2'>
+
+	<div class="thumbnail" style="border: 2px solid #C0C0C0;padding: 5px;">
+		{% if product.productimage_set.all %}
+			{% for item in  product.productimage_set.all %}
+				{% if item.featured %}
+
+					<div style="width:100px;
+					height:100px;margin: 0 auto;">
+					<a href="{{ product.get_absolute_url }}">
+					<div class="background_img_thumb" style="width:80%; height:80%;
+					background-image: url('/media/{{ MEDIA_ROOT}}{{ item.image }}');"></div>
+					</a>
+					</div>
+
+					<!-- <img class='img-responsive' src="/media/{{ MEDIA_ROOT}}{{ item.image }}"/> -->
+				{% endif %}
+			{% endfor %}
+		{% else %}
+
+		<!-- <img class='img-responsive' src="{% static 'img/unnamed.jpg' %}" width="80" height="80"/> -->
+
+		<div style="width:100px;
+					height:100px;margin: 0 auto;">
+					<a href="{{ product.get_absolute_url }}">
+					<div class="background_img_thumb" style="width:80%; height:80%;
+					background-image:src='{% static 'img/unnamed.jpg' %}';"></div>
+					</a>
+		</div>
+
+		{% endif %}
+
+		 <div class="caption">
+			 <a href='{{ product.get_absolute_url }}'> <h3>{{ product.title }}</h3></a>
+			 <p>{{ product.description|truncatewords:15 }}</p>
+			 <p> <a href="{{ product.get_absolute_url }}" class="btn btn-primary" role="button">View</a> <a href="#" class="btn btn-default" role="button" >Button</a> </p>
+			</div>
+		</div>
+	</div>
+	{% cycle "" "" "" "" "</div><br/><hr/><div class='row'>" %}
+{% endfor %}
+</div>
+
+
+{% endblock %}
